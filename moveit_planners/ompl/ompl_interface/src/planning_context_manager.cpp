@@ -39,32 +39,43 @@
 #include <moveit/profiler/profiler.h>
 #include <utility>
 
-#include <ompl/geometric/planners/rrt/RRT.h>
-#include <ompl/geometric/planners/rrt/pRRT.h>
-#include <ompl/geometric/planners/rrt/RRTConnect.h>
-#include <ompl/geometric/planners/rrt/TRRT.h>
-#include <ompl/geometric/planners/rrt/LazyRRT.h>
-#include <ompl/geometric/planners/est/EST.h>
-#include <ompl/geometric/planners/sbl/SBL.h>
-#include <ompl/geometric/planners/sbl/pSBL.h>
-#include <ompl/geometric/planners/kpiece/KPIECE1.h>
-#include <ompl/geometric/planners/kpiece/BKPIECE1.h>
-#include <ompl/geometric/planners/kpiece/LBKPIECE1.h>
-#include <ompl/geometric/planners/rrt/RRTstar.h>
-#include <ompl/geometric/planners/prm/PRM.h>
-#include <ompl/geometric/planners/prm/PRMstar.h>
-#include <ompl/geometric/planners/fmt/FMT.h>
-#include <ompl/geometric/planners/fmt/BFMT.h>
-#include <ompl/geometric/planners/pdst/PDST.h>
-#include <ompl/geometric/planners/stride/STRIDE.h>
-#include <ompl/geometric/planners/rrt/BiTRRT.h>
-#include <ompl/geometric/planners/rrt/LBTRRT.h>
+#include <ompl/geometric/planners/AnytimePathShortening.h>
+#include <ompl/geometric/planners/cforest/CForest.h>
 #include <ompl/geometric/planners/est/BiEST.h>
+#include <ompl/geometric/planners/est/EST.h>
 #include <ompl/geometric/planners/est/ProjEST.h>
+#include <ompl/geometric/planners/fmt/BFMT.h>
+#include <ompl/geometric/planners/fmt/FMT.h>
+#include <ompl/geometric/planners/informedtrees/ABITstar.h>
+#include <ompl/geometric/planners/informedtrees/AITstar.h>
+#include <ompl/geometric/planners/informedtrees/BITstar.h>
+#include <ompl/geometric/planners/kpiece/BKPIECE1.h>
+#include <ompl/geometric/planners/kpiece/KPIECE1.h>
+#include <ompl/geometric/planners/kpiece/LBKPIECE1.h>
+#include <ompl/geometric/planners/pdst/PDST.h>
 #include <ompl/geometric/planners/prm/LazyPRM.h>
 #include <ompl/geometric/planners/prm/LazyPRMstar.h>
+#include <ompl/geometric/planners/prm/PRM.h>
+#include <ompl/geometric/planners/prm/PRMstar.h>
 #include <ompl/geometric/planners/prm/SPARS.h>
 #include <ompl/geometric/planners/prm/SPARStwo.h>
+#include <ompl/geometric/planners/rlrt/BiRLRT.h>
+#include <ompl/geometric/planners/rlrt/RLRT.h>
+#include <ompl/geometric/planners/rrt/BiTRRT.h>
+#include <ompl/geometric/planners/rrt/LazyLBTRRT.h>
+#include <ompl/geometric/planners/rrt/LazyRRT.h>
+#include <ompl/geometric/planners/rrt/LBTRRT.h>
+#include <ompl/geometric/planners/rrt/pRRT.h>
+#include <ompl/geometric/planners/rrt/RRT.h>
+#include <ompl/geometric/planners/rrt/RRTConnect.h>
+#include <ompl/geometric/planners/rrt/RRTsharp.h>
+#include <ompl/geometric/planners/rrt/RRTstar.h>
+#include <ompl/geometric/planners/rrt/RRTXstatic.h>
+#include <ompl/geometric/planners/rrt/TRRT.h>
+#include <ompl/geometric/planners/sbl/pSBL.h>
+#include <ompl/geometric/planners/sbl/SBL.h>
+#include <ompl/geometric/planners/sst/SST.h>
+#include <ompl/geometric/planners/stride/STRIDE.h>
 
 #include <moveit/ompl_interface/parameterization/joint_space/joint_model_state_space_factory.h>
 #include <moveit/ompl_interface/parameterization/joint_space/joint_model_state_space.h>
@@ -206,6 +217,39 @@ void ompl_interface::PlanningContextManager::registerDefaultPlanners()
   registerPlannerAllocator(   //
       "geometric::SPARStwo",  //
       std::bind(&allocatePlanner<og::SPARStwo>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  registerPlannerAllocator(   //
+      "geometric::CForest",  //
+      std::bind(&allocatePlanner<og::CForest>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  registerPlannerAllocator(   //
+      "geometric::ABITstar",  //
+      std::bind(&allocatePlanner<og::ABITstar>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  registerPlannerAllocator(   //
+      "geometric::AITstar",  //
+      std::bind(&allocatePlanner<og::AITstar>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  registerPlannerAllocator(   //
+      "geometric::BITstar",  //
+      std::bind(&allocatePlanner<og::BITstar>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  registerPlannerAllocator(   //
+      "geometric::BiRLRT",  //
+      std::bind(&allocatePlanner<og::BiRLRT>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  registerPlannerAllocator(   //
+      "geometric::RLRT",  //
+      std::bind(&allocatePlanner<og::RLRT>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  registerPlannerAllocator(   //
+      "geometric::LazyLBTRRT",  //
+      std::bind(&allocatePlanner<og::LazyLBTRRT>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  registerPlannerAllocator(   //
+      "geometric::RRTsharp",  //
+      std::bind(&allocatePlanner<og::RRTsharp>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  registerPlannerAllocator(   //
+      "geometric::RRTXstatic",  //
+      std::bind(&allocatePlanner<og::RRTXstatic>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  registerPlannerAllocator(   //
+      "geometric::SST",  //
+      std::bind(&allocatePlanner<og::SST>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+  registerPlannerAllocator(   //
+      "geometric::AnytimePathShortening",  //
+      std::bind(&allocatePlanner<og::AnytimePathShortening>, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 }
 
 void ompl_interface::PlanningContextManager::registerDefaultStateSpaces()
